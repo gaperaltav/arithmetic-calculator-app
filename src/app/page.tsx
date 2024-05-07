@@ -4,7 +4,17 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="w-100">content</main>
+      <main className="w-100">
+      <div className="">
+        <h2>Operation: Addition</h2>
+        <label htmlFor="add_num1" >num1</label>
+        <input type="number" id="add_num1" />
+        <label htmlFor="add_num2" >num2</label>
+        <input type="number" id="add_num2" />
+        <button>Run Addition</button>
+        <input type="number" id="add_total" />
+      </div>
+      </main>
     </>
   );
 }
