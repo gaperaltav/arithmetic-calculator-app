@@ -4,9 +4,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="w-100">
-        content
-      </main>
+      <main className="w-100">content</main>
     </>
   );
 }

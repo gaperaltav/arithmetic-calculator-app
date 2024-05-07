@@ -1,5 +1,5 @@
 export function Navbar() {
-    return (
+  return (
     <div className="w-[100] px-6 flex justify-between p-[10px] mb-[10px] bg-[#fff] h-[70px] mt-0">
       <div className="flex">
         <a
@@ -16,12 +16,11 @@ export function Navbar() {
       <div className="relative">
         <a
           className="bg-white block flex hover:text-gray-500"
-         // onClick={() => {}}
+          // onClick={() => {}}
         >
           <p className="content-center mr-2  ">
             Hi! <strong>user</strong>
           </p>
-          
         </a>
       </div>
     </div>
