@@ -1,3 +1,13 @@
+CREATE TABLE IF NOT EXISTS "operations" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"type" numeric,
+	"name" text,
+	"cost" real,
+	"created_at" date DEFAULT now(),
+	"updated_date" date,
+	"deleted_date" date
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "records" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"operation_id" integer NOT NULL,
@@ -5,7 +15,7 @@ CREATE TABLE IF NOT EXISTS "records" (
 	"amount" double precision,
 	"user_balance" double precision,
 	"operation_response" double precision,
-	"created_date" date,
+	"created_at" date DEFAULT now(),
 	"updated_date" date,
 	"deleted_date" date
 );
@@ -15,7 +25,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"user_name" text,
 	"password" text,
 	"status" smallint DEFAULT 1,
-	"created_date" date,
+	"created_at" date DEFAULT now(),
 	"updated_date" date,
 	"deleted_date" date
 );
