@@ -38,7 +38,7 @@ export default function Home() {
           >
             <option value="none">- Select Operation -</option>
             <option value="addition">Addintion</option>
-            <option value="subtraction">subtraction</option>
+            <option value="subtraction">Subtraction</option>
           </select>
 
           <div id="operation-form" className="w-100 mt-5">
