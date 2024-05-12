@@ -10,7 +10,28 @@ CREATE TABLE IF NOT EXISTS "account" (
 	"scope" text,
 	"id_token" text,
 	"session_state" text,
+	"created_date" timestamp DEFAULT now() NOT NULL,
+	"updated_date" timestamp,
+	"deleted_date" timestamp,
 	CONSTRAINT "account_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "operations" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"type" text NOT NULL,
+	"cost" numeric(100, 2)
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "records" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"operation_id" integer NOT NULL,
+	"user_id" text NOT NULL,
+	"amount" numeric(100, 2),
+	"userBalance" numeric(100, 2),
+	"operation_response" numeric(100, 2),
+	"created_date" timestamp DEFAULT now() NOT NULL,
+	"updated_date" timestamp,
+	"deleted_date" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
@@ -22,10 +43,13 @@ CREATE TABLE IF NOT EXISTS "session" (
 CREATE TABLE IF NOT EXISTS "user" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text,
-	"type" text DEFAULT 1,
+	"status" text DEFAULT 'active',
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
-	"image" text
+	"image" text,
+	"created_date" timestamp DEFAULT now() NOT NULL,
+	"updated_date" timestamp,
+	"deleted_date" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verificationToken" (
@@ -37,6 +61,18 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "records" ADD CONSTRAINT "records_operation_id_operations_id_fk" FOREIGN KEY ("operation_id") REFERENCES "operations"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "records" ADD CONSTRAINT "records_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

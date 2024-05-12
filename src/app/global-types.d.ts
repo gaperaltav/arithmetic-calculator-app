@@ -12,7 +12,6 @@ type Operation = {
 };
 
 /** Enums */
-
 enum UserStatus {
   inactive = 0,
   active = 1,
