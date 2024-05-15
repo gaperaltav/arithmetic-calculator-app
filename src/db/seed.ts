@@ -12,10 +12,10 @@ const initialUsers: (typeof users.$inferInsert)[] = [
   email:"root@gmail.com",
   emailVerified: new Date(),
   image: 'https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg',
-  password: '1234'
+  password: '1234',
+  balance: '1500'
   },
 ];
-
 
 const mainSeed = async () => {
   const client = postgres({

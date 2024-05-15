@@ -1,9 +1,12 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
-import AdditionForm from "./components/addition-form";
+import { ChangeEvent, useEffect, useState } from "react";
+import AdditionForm from "./components/additionForm";
 import { useSession } from "next-auth/react";
-import SubtractionForm from "./components/subtraction-form";
+import SubtractionForm from "./components/subtractionForm";
+import UserBalance from "./components/userBalance";
+import { users } from "@/db/schema";
+import { getUserByEmail } from "./components/actions/userActions";
 
 interface OpSelectItem {
   addition: () => JSX.Element;
@@ -16,7 +19,8 @@ const operations: OpSelectItem = {
 };
 
 export default function Operations() {
-    const { data } = useSession();
+  const [user, setUser ] = useState<typeof users.$inferSelect | null >(null);
+  const { data } = useSession();
   const [currentOp, setCurrentOp] = useState("addition");
   const SelectedOperation = operations[currentOp];
 
@@ -25,10 +29,19 @@ export default function Operations() {
     setCurrentOp(value);
   };
 
-  console.log({ reactSession: data });
+  const getUserInfo = async(email: string) => {
+   const userFromDb = await getUserByEmail(email)
+   setUser(userFromDb)
+  }
+
+  useEffect(() => {
+    const email = data?.user?.email!
+    getUserInfo(email)
+  }, [])
 
   return (
     <>
+      <UserBalance balance={user?.balance!} />
       <div className="flex align-center">
         <div className="px-5">
           <label htmlFor="operations">Select Operation:</label>

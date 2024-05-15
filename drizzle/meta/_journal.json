@@ -15,6 +15,20 @@
       "when": 1715490176686,
       "tag": "0001_condemned_madripoor",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1715815046623,
+      "tag": "0002_burly_princess_powerful",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1715815833849,
+      "tag": "0003_low_lady_ursula",
+      "breakpoints": true
     }
   ]
 }
