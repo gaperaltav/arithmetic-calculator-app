@@ -3,6 +3,7 @@ interface User {
   userName: string;
   password: string;
   status: UserStatus;
+  balance: string;
 }
 
 type Operation = {

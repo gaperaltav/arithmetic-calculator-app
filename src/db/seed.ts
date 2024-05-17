@@ -1,7 +1,7 @@
 import dotenv, { config } from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { users } from "./schema";
+import { operations, users } from "./schema";
 
 //TODO: set for diffents envs
 dotenv.config({ path: __dirname + "/../../.env.local" });
@@ -17,6 +17,33 @@ const initialUsers: (typeof users.$inferInsert)[] = [
   },
 ];
 
+const initialOperations: (typeof operations.$inferInsert)[] = [
+  {
+    type: "addition",
+    cost: '3',
+  },
+  {
+    type:  "subtraction",
+    cost: '4',
+  },
+  {
+    type: "multiplication",
+    cost: '2',
+  },
+  {
+    type: "division",
+    cost: "5",
+  },
+  {
+    type: "square_root",
+    cost: "10",
+  },
+  {
+    type: "random_string",
+    cost: "12",
+  },
+];
+
 const mainSeed = async () => {
   const client = postgres({
     host: process.env.DB_HOST!,
@@ -28,6 +55,7 @@ const mainSeed = async () => {
   const database = drizzle(client);
 
   await database.insert(users).values(initialUsers);
+  await database.insert(operations).values(initialOperations);
 };
 
 mainSeed()

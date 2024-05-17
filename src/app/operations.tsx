@@ -8,8 +8,13 @@ import UserBalance from "./components/userBalance";
 import { users } from "@/db/schema";
 import { getUserByEmail } from "./components/actions/userActions";
 
+interface OpProps {
+  user: User;
+  refreshInfo: Function;
+}
+
 interface OpSelectItem {
-  addition: () => JSX.Element;
+  addition: ({ user, refreshInfo }: OpProps) => JSX.Element;
   subtraction: () => JSX.Element;
 }
 
@@ -19,9 +24,9 @@ const operations: OpSelectItem = {
 };
 
 export default function Operations() {
-  const [user, setUser ] = useState<typeof users.$inferSelect | null >(null);
+  const [user, setUser] = useState<typeof users.$inferSelect | null>(null);
   const { data } = useSession();
-  const [currentOp, setCurrentOp] = useState("addition");
+  const [currentOp, setCurrentOp] = useState("none");
   const SelectedOperation = operations[currentOp];
 
   const onChangeOp = (event: ChangeEvent<HTMLElement>) => {
@@ -29,21 +34,21 @@ export default function Operations() {
     setCurrentOp(value);
   };
 
-  const getUserInfo = async(email: string) => {
-   const userFromDb = await getUserByEmail(email)
-   setUser(userFromDb)
-  }
+  const fetchUserData = async () => {
+    const email = data?.user?.email!;
+    const userFromDb = await getUserByEmail(email);
+    setUser(userFromDb);
+  };
 
   useEffect(() => {
-    const email = data?.user?.email!
-    getUserInfo(email)
-  }, [])
+    fetchUserData();
+  }, []);
 
   return (
     <>
-      <UserBalance balance={user?.balance!} />
       <div className="flex align-center">
         <div className="px-5">
+          <UserBalance balance={user?.balance!} />
           <label htmlFor="operations">Select Operation:</label>
           <select
             name="select-operation"
@@ -55,7 +60,12 @@ export default function Operations() {
             <option value="subtraction">Subtraction</option>
           </select>
           <div id="operation-form" className="w-100 mt-5">
-            {currentOp !== "none" && <SelectedOperation />}
+            {currentOp !== "none" && (
+              <SelectedOperation
+                user={user}
+                refreshInfo={() => fetchUserData()}
+              />
+            )}
           </div>
         </div>
       </div>
