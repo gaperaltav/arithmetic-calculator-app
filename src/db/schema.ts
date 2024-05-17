@@ -79,7 +79,7 @@ export const verificationTokens = pgTable(
 export const operations = pgTable("operations", {
   id: serial("id").primaryKey(),
   type: text("type").notNull(),
-  cost: numeric("cost", { precision: 100, scale: 2 }),
+  cost: numeric("cost", { precision: 100, scale: 2 }).notNull(),
 });
 
 export const records = pgTable("records", {

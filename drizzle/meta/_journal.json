@@ -29,6 +29,13 @@
       "when": 1715815833849,
       "tag": "0003_low_lady_ursula",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1715922390761,
+      "tag": "0004_foamy_champions",
+      "breakpoints": true
     }
   ]
 }

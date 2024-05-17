@@ -1,0 +1,1 @@
+ALTER TABLE "operations" ALTER COLUMN "cost" SET NOT NULL;
