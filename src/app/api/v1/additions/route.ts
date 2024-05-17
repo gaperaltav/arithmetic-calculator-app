@@ -12,25 +12,29 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const data = await request.json();
   const { firstNumber, secondNumber, user: currentUser } = data;
-
   const operation = await getOperationCost({ db, opType: ADDITION_ID });
-  
+
   if (Number(operation.cost) <= Number(currentUser.balance)) {
     const userBalance = (
       Number(currentUser.balance) - Number(operation.cost)
     ).toString();
+
+    const opResponse = Number(firstNumber) + Number(secondNumber);
 
     await insertNewRecord({
       db,
       operation,
       userId: currentUser.id,
       userBalance,
+      operationResponse: opResponse,
     });
     await updateUserBalance({
       db,
       balance: userBalance,
       userId: currentUser.id,
     });
+
+    return NextResponse.json({ result: opResponse });
   } else {
     return NextResponse.json(
       { message: "you don't have enought balance to continue" },
@@ -39,6 +43,4 @@ export async function POST(request: Request) {
       }
     );
   }
-
-  return NextResponse.json({ result: firstNumber + secondNumber });
 }

@@ -11,11 +11,11 @@ export async function getUserByEmail(email: string) {
   const userResult = (await db
     .select()
     .from(users)
-    .where(eq(users.email, email))) as typeof users.$inferSelect [];
+    .where(eq(users.email, email))) as (typeof users.$inferSelect)[];
 
-    if(userResult && userResult.length > 0){
-      return userResult[0]
-    }
+  if (userResult && userResult.length > 0) {
+    return userResult[0];
+  }
 
-    throw new Error('user not found')
+  throw new Error("user not found");
 }
