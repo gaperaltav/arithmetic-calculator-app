@@ -1,6 +1,7 @@
 import db from "@/db";
-import { operations, records, users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { getOperationCost } from "@/services/operation-service";
+import { insertNewRecord } from "@/services/record-service";
+import { updateUserBalance } from "@/services/user-service";
 import { NextResponse } from "next/server";
 const ADDITION_ID: number = 1;
 
@@ -12,28 +13,24 @@ export async function POST(request: Request) {
   const data = await request.json();
   const { firstNumber, secondNumber, user: currentUser } = data;
 
-  const opCost = (await db
-    .select()
-    .from(operations)
-    .where(
-      eq(operations.id, ADDITION_ID)
-    )) as (typeof operations.$inferSelect)[];
+  const operation = await getOperationCost({ db, opType: ADDITION_ID });
+  
+  if (Number(operation.cost) <= Number(currentUser.balance)) {
+    const userBalance = (
+      Number(currentUser.balance) - Number(operation.cost)
+    ).toString();
 
-  const cost = opCost ? opCost[0].cost : "0";
-  if (Number(cost) <= Number(currentUser.balance)) {
-    const userBalance = (Number(currentUser.balance) - Number(cost)).toString();
-
-    await db.insert(records).values({
-      operationId: opCost[0].id,
+    await insertNewRecord({
+      db,
+      operation,
       userId: currentUser.id,
-      amount: cost,
       userBalance,
     });
-
-    await db
-      .update(users)
-      .set({ balance: userBalance })
-      .where(eq(users.id, currentUser.id));
+    await updateUserBalance({
+      db,
+      balance: userBalance,
+      userId: currentUser.id,
+    });
   } else {
     return NextResponse.json(
       { message: "you don't have enought balance to continue" },
