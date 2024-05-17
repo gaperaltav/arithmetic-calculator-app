@@ -7,6 +7,7 @@ import SubtractionForm from "./components/subtractionForm";
 import UserBalance from "./components/userBalance";
 import { users } from "@/db/schema";
 import { getUserByEmail } from "./components/actions/userActions";
+import MultiplicationForm from "./components/multiplicationForm";
 
 interface OpProps {
   user: User;
@@ -15,12 +16,14 @@ interface OpProps {
 
 interface OpSelectItem {
   addition: ({ user, refreshInfo }: OpProps) => JSX.Element;
-  subtraction: () => JSX.Element;
+  subtraction: ({ user, refreshInfo }: OpProps) => JSX.Element;
+  multiplication:  ({ user, refreshInfo }: OpProps) => JSX.Element;
 }
 
 const operations: OpSelectItem = {
   addition: AdditionForm,
   subtraction: SubtractionForm,
+  multiplication: MultiplicationForm
 };
 
 export default function Operations() {
@@ -58,6 +61,7 @@ export default function Operations() {
             <option value="none">- Select Operation -</option>
             <option value="addition">Addition</option>
             <option value="subtraction">Subtraction</option>
+            <option value="multiplication">Multiplication</option>
           </select>
           <div id="operation-form" className="w-100 mt-5">
             {currentOp !== "none" && (
