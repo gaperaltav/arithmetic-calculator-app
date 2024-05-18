@@ -92,10 +92,7 @@ export const records = pgTable("records", {
     .notNull(),
   amount: numeric("amount", { precision: 100, scale: 2 }),
   userBalance: numeric("userBalance", { precision: 100, scale: 2 }),
-  operationResponse: numeric("operation_response", {
-    precision: 100,
-    scale: 2,
-  }),
+  operationResponse: text("operation_response"),
   createdDate: timestamp("created_date", { mode: "string" })
     .notNull()
     .defaultNow(),

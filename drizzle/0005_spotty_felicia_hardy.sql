@@ -1,0 +1,1 @@
+ALTER TABLE "records" ALTER COLUMN "operation_response" SET DATA TYPE text;

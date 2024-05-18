@@ -12,7 +12,7 @@ export async function insertNewRecord({
   operation: typeof operations.$inferSelect;
   userId: string;
   userBalance: string;
-  operationResponse: number
+  operationResponse: string
 }): Promise<void> {
   await db.insert(records).values({
     operationId: operation.id,

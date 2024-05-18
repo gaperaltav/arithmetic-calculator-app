@@ -36,6 +36,13 @@
       "when": 1715922390761,
       "tag": "0004_foamy_champions",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1715996433531,
+      "tag": "0005_spotty_felicia_hardy",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-interface User {
+export interface User {
   id: number;
   userName: string;
   password: string;
@@ -6,19 +6,19 @@ interface User {
   balance: string;
 }
 
-type Operation = {
+export type Operation = {
   id: number;
   type: OperationType;
   cost: number;
 };
 
 /** Enums */
-enum UserStatus {
+export enum UserStatus {
   inactive = 0,
   active = 1,
 }
 
-enum OperationType {
+export enum OperationType {
   addition = 1,
   subtraction,
   multiplication,

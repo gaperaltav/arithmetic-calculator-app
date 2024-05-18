@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       operation,
       userId: currentUser.id,
       userBalance,
-      operationResponse: opResponse,
+      operationResponse: opResponse.toString(),
     });
     await updateUserBalance({
       db,

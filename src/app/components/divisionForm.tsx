@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { User } from "../global-types";
 
-export default function MultiplicationForm({ user, refreshInfo }: { user: User, refreshInfo: Function }) {
+export default function DivisionForm({ user, refreshInfo }: { user: User, refreshInfo: Function }) {
   const [firstNumber, setFirstNumber] = useState<number>(0);
   const [secondNumber, setSecondNumber] = useState<number>(0);
   const [result, setResut] = useState<number>(0);
 
-  const onSubmitMultiplication = () => {
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/multiplications`, {
+  const onSubmitDivision = () => {
+    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/divisions`, {
       method: "POST",
       body: JSON.stringify({ firstNumber, secondNumber, user }),
     })
@@ -59,9 +59,9 @@ export default function MultiplicationForm({ user, refreshInfo }: { user: User, 
             <button
               type="button"
               className={`bg-blue-500 h-[35px] hover:bg-blue-700 w-31 max-md:w-15 text-white font-bold py-1 px-2 rounded mx-1 disabled:bg-gray-300 disabled:cursor-not-allowed`}
-              onClick={onSubmitMultiplication}
+              onClick={onSubmitDivision}
             >
-              Run Multiplication
+              Run Division
             </button>
           </div>
         </div>

@@ -1,9 +1,10 @@
+import { OperationType } from "@/app/global-types";
 import db from "@/db";
 import { getOperationCost } from "@/services/operation-service";
 import { insertNewRecord } from "@/services/record-service";
 import { updateUserBalance } from "@/services/user-service";
 import { NextResponse } from 'next/server'
- const MUTIPLICATION_TYPE_ID: number = 3;
+
 export async function GET(request: Request) {
    return NextResponse.json({ Welcome: 'Welcome to multiplication API' })
 }
@@ -11,7 +12,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const data = await request.json();
   const { firstNumber, secondNumber, user: currentUser } = data;
-  const operation = await getOperationCost({ db, opType: MUTIPLICATION_TYPE_ID });
+  const operation = await getOperationCost({ db, opType: OperationType.multiplication });
 
   if (Number(operation.cost) <= Number(currentUser.balance)) {
     const userBalance = (
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
       operation,
       userId: currentUser.id,
       userBalance,
-      operationResponse: opResponse,
+      operationResponse: opResponse.toString(),
     });
     await updateUserBalance({
       db,

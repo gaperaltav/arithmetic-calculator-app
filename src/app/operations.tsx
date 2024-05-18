@@ -8,6 +8,10 @@ import UserBalance from "./components/userBalance";
 import { users } from "@/db/schema";
 import { getUserByEmail } from "./components/actions/userActions";
 import MultiplicationForm from "./components/multiplicationForm";
+import DivisionForm from "./components/divisionForm";
+import { User } from "./global-types";
+import SquareRootForm from "./components/squarerootForm";
+import RandomStringForm from "./components/ramdonStringForm";
 
 interface OpProps {
   user: User;
@@ -18,12 +22,18 @@ interface OpSelectItem {
   addition: ({ user, refreshInfo }: OpProps) => JSX.Element;
   subtraction: ({ user, refreshInfo }: OpProps) => JSX.Element;
   multiplication:  ({ user, refreshInfo }: OpProps) => JSX.Element;
+  division: ({ user, refreshInfo }: OpProps) => JSX.Element;
+  quareRoot: ({ user, refreshInfo }: OpProps) => JSX.Element;
+  randomString: ({ user, refreshInfo }: OpProps) => JSX.Element;
 }
 
 const operations: OpSelectItem = {
   addition: AdditionForm,
   subtraction: SubtractionForm,
-  multiplication: MultiplicationForm
+  multiplication: MultiplicationForm,
+  division: DivisionForm,
+  quareRoot: SquareRootForm,
+  randomString: RandomStringForm
 };
 
 export default function Operations() {
@@ -62,6 +72,9 @@ export default function Operations() {
             <option value="addition">Addition</option>
             <option value="subtraction">Subtraction</option>
             <option value="multiplication">Multiplication</option>
+            <option value="division">Division</option>
+            <option value="quareRoot">Square root</option>
+            <option value="randomString">Random string</option>
           </select>
           <div id="operation-form" className="w-100 mt-5">
             {currentOp !== "none" && (
