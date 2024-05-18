@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import AdditionForm from "./components/additionForm";
 import { useSession } from "next-auth/react";
 import SubtractionForm from "./components/subtractionForm";
-import UserBalance from "./components/userBalance";
+import FormHeader  from "./components/formHeader";
 import { users } from "@/db/schema";
 import { getUserByEmail } from "./components/actions/userActions";
 import MultiplicationForm from "./components/multiplicationForm";
@@ -61,7 +61,7 @@ export default function Operations() {
     <>
       <div className="flex align-center">
         <div className="px-5">
-          <UserBalance balance={user?.balance!} />
+          <FormHeader  balance={user?.balance!} />
           <label htmlFor="operations">Select Operation:</label>
           <select
             name="select-operation"
