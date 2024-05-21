@@ -1,4 +1,4 @@
-import { getRecordsByUserId } from "@/services/record-service";
+import { getRecordsByUserId, getTotalRecordsByUser } from "@/services/record-service";
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -7,10 +7,16 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const data = await request.json();
-  const { userId } = data;
+  const { userId, page, pageSize } = data;
 
-   const records = await getRecordsByUserId(userId)
-   console.log({ records })
+   const records = await getRecordsByUserId(userId, page, pageSize)
 
-    return NextResponse.json(records);
+   const totalReocords = await getTotalRecordsByUser(userId)
+   const resultData = {
+      records,
+      page,
+      total: totalReocords[0].count
+   } 
+
+    return NextResponse.json(resultData);
 }

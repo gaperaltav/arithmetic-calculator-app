@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const linkStyle = { color: "#0080FF", textDecoration: "underline" };
+
 export default function FormHeader({ balance }: { balance: string }) {
   const pathname = usePathname();
   const href = pathname === "/records" ? "/" : "/records";
@@ -11,7 +13,7 @@ export default function FormHeader({ balance }: { balance: string }) {
   return (
     <div className="flex justify-between  w-[100] ">
       <div>
-        <Link href={href}>{text}</Link>
+        <Link style={linkStyle} href={href}>{text}</Link>
       </div>
       <div>
         <strong> Balance </strong>

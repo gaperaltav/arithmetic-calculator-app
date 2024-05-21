@@ -4,10 +4,14 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getUserByEmail } from "../components/actions/userActions";
 import FormHeader from "../components/formHeader";
+const API_URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/`;
 
 export default function Operations() {
   const [user, setUser] = useState<typeof users.$inferSelect | null>(null);
   const [records, setRecords] = useState<(typeof records.$inferSelect)[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number[]>([]);
+  const pageSize = 3;
 
   const { data } = useSession();
 
@@ -19,24 +23,27 @@ export default function Operations() {
         return userData;
       })
       .then((res) =>
-        fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/records`, {
+        fetch(`${API_URL}records`, {
           method: "POST",
-          body: JSON.stringify({ userId: res.id }),
+          body: JSON.stringify({ userId: res.id, page: currentPage, pageSize }),
         }).then((res) => res.json())
       )
-      .then((recordsData) => setRecords(recordsData));
+      .then((recordsData) => {
+        setTotalPages([...Array(Math.ceil(recordsData.total / pageSize))]);
+        setRecords(recordsData.records);
+      });
   };
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <>
       <div className="flex align-center">
         <div className="px-5">
           <FormHeader balance={user?.balance!} />
-          <table className="table-auto">
+          <table className="table-auto 	border-separate border-solid border-1 border-sky-500">
             <thead>
               <tr>
                 <th>Operation</th>
@@ -46,16 +53,33 @@ export default function Operations() {
               </tr>
             </thead>
             <tbody>
-              { records.length > 0 && records.map((record: typeof records.$inferSelect) => (
-                <tr key={record.id}>
-                  <td>{record.operationId}</td>
-                  <td>{record.amount}</td>
-                  <td>{record.balance}</td>
-                  <td>{record.operationResponse}</td>
-                </tr>
-              ))}
+              {records.length > 0 &&
+                records.map((record: typeof records.$inferSelect) => (
+                  <tr key={record.id}>
+                    <td>{record.operationId}</td>
+                    <td>{record.amount}</td>
+                    <td>{record.balance}</td>
+                    <td>{record.operationResponse}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
+          <ul className="flex flex-row gap-x-2 mt-3">
+            <li>
+              <a> Prev </a>
+            </li>
+            {totalPages.length > 0 &&
+              totalPages.map((e, index) => (
+                <li key={index}>
+                  <button onClick={() => setCurrentPage(index + 1)}>
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            <li>
+              <a> Next </a>
+            </li>
+          </ul>
         </div>
       </div>
     </>
