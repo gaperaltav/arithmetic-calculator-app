@@ -3,22 +3,33 @@
 import { useState } from "react";
 import { User } from "../global-types";
 
-export default function DivisionForm({ user, refreshInfo }: { user: User, refreshInfo: Function }) {
+export default function DivisionForm({
+  user,
+  refreshInfo,
+}: {
+  user: User;
+  refreshInfo: Function;
+}) {
   const [firstNumber, setFirstNumber] = useState<number>(0);
   const [secondNumber, setSecondNumber] = useState<number>(0);
   const [result, setResut] = useState<number>(0);
 
   const onSubmitDivision = () => {
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/divisions`, {
+    const url = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+      ? `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/divisions`
+      : `/api/v1/divisions`;
+
+    fetch(url, {
       method: "POST",
       body: JSON.stringify({ firstNumber, secondNumber, user }),
     })
       .then((res) => res.json())
       .then((data) => {
-       const { result } = data;
-        setResut(result)
-        refreshInfo()
-      }).catch(err => console.log(JSON.parse(err)));
+        const { result } = data;
+        setResut(result);
+        refreshInfo();
+      })
+      .catch((err) => console.log(JSON.parse(err)));
   };
 
   return (

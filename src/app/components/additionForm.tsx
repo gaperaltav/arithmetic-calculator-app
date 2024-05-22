@@ -9,7 +9,11 @@ export default function AdditionForm({ user, refreshInfo }: { user: User, refres
   const [result, setResut] = useState<number>(0);
 
   const onSubmitAddition = () => {
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/additions`, {
+    const url = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+    ? `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/additions`
+    : `/api/v1/additions`;
+
+    fetch(url, {
       method: "POST",
       body: JSON.stringify({ firstNumber, secondNumber, user }),
     })

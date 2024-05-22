@@ -7,7 +7,11 @@ export default function RandomStringForm({ user, refreshInfo }: { user: User, re
   const [result, setResut] = useState<string>("");
 
   const onSubmitRandomString = () => {
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/random-strings`, {
+    const url = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+    ? `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/random-strings`
+    : `/api/v1/random-strings`;
+
+    fetch(url, {
       method: "POST",
       body: JSON.stringify({ user }),
     })

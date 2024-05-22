@@ -8,7 +8,11 @@ export default function SquareRootForm({ user, refreshInfo }: { user: User, refr
   const [result, setResut] = useState<number>(0);
 
   const onSubmitSquareRoot = () => {
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/square-roots`, {
+    const url = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+    ? `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/square-roots`
+    : `/api/v1/square-roots`;
+
+    fetch(url, {
       method: "POST",
       body: JSON.stringify({ firstNumber, user }),
     })

@@ -3,22 +3,33 @@
 import { useState } from "react";
 import { User } from "../global-types";
 
-export default function SubtractionForm({ user, refreshInfo }: { user: User, refreshInfo: Function }) {
+export default function SubtractionForm({
+  user,
+  refreshInfo,
+}: {
+  user: User;
+  refreshInfo: Function;
+}) {
   const [firstNumber, setFirstNumber] = useState<number>(0);
   const [secondNumber, setSecondNumber] = useState<number>(0);
   const [result, setResut] = useState<number>(0);
 
   const onSubmitSubtraction = () => {
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/subtractions`, {
+    const url = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+      ? `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/subtractions`
+      : `/api/v1/subtractions`;
+
+    fetch(url, {
       method: "POST",
       body: JSON.stringify({ firstNumber, secondNumber, user }),
     })
       .then((res) => res.json())
       .then((data) => {
-       const { result } = data;
-        setResut(result)
-        refreshInfo()
-      }).catch(err => console.log(JSON.parse(err)));
+        const { result } = data;
+        setResut(result);
+        refreshInfo();
+      })
+      .catch((err) => console.log(JSON.parse(err)));
   };
 
   return (
@@ -61,7 +72,7 @@ export default function SubtractionForm({ user, refreshInfo }: { user: User, ref
               className={`bg-blue-500 h-[35px] hover:bg-blue-700 w-31 max-md:w-15 text-white font-bold py-1 px-2 rounded mx-1 disabled:bg-gray-300 disabled:cursor-not-allowed`}
               onClick={onSubmitSubtraction}
             >
-              Run addition
+              Run subtraction
             </button>
           </div>
         </div>

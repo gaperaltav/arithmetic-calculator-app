@@ -9,7 +9,11 @@ export default function MultiplicationForm({ user, refreshInfo }: { user: User, 
   const [result, setResut] = useState<number>(0);
 
   const onSubmitMultiplication = () => {
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/multiplications`, {
+    const url = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+    ? `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/multiplications`
+    : `/api/v1/multiplications`;
+
+    fetch(url, {
       method: "POST",
       body: JSON.stringify({ firstNumber, secondNumber, user }),
     })
