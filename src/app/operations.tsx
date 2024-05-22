@@ -40,7 +40,7 @@ export default function Operations() {
   const [user, setUser] = useState<typeof users.$inferSelect | null>(null);
   const { data } = useSession();
   const [currentOp, setCurrentOp] = useState("none");
-  const SelectedOperation = operations[currentOp];
+  const SelectedOperation = operations[currentOp as keyof OpSelectItem];
 
   const onChangeOp = (event: ChangeEvent<HTMLElement>) => {
     const { value } = event.target as HTMLInputElement;
@@ -55,6 +55,7 @@ export default function Operations() {
 
   useEffect(() => {
     fetchUserData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
