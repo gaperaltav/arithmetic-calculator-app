@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import { getUserByEmail } from "../components/actions/userActions";
 import FormHeader from "../components/formHeader";
 import { OperationType } from "../global-types";
-const API_URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/`;
+const API_URL = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+  ? `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/`
+  : `/api/v1/`;
 
 interface recrodsState {
   id: number;
