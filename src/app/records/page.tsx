@@ -7,9 +7,17 @@ import FormHeader from "../components/formHeader";
 import { OperationType } from "../global-types";
 const API_URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/`;
 
+interface recrodsState {
+  id: number;
+  operationId: number;
+  amount: number;
+  balance: string;
+  operationResponse: string;
+}
+
 export default function Operations() {
   const [user, setUser] = useState<typeof users.$inferSelect | null>(null);
-  const [records, setRecords] = useState<(typeof records.$inferSelect)[]>([]);
+  const [records, setRecords] = useState<recrodsState[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number[]>([]);
   const pageSize = 8;
@@ -37,6 +45,7 @@ export default function Operations() {
 
   useEffect(() => {
     fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   return (
@@ -55,7 +64,7 @@ export default function Operations() {
             </thead>
             <tbody>
               {records.length > 0 &&
-                records.map((record: typeof records.$inferSelect) => (
+                records.map((record: recrodsState) => (
                   <tr key={record.id}>
                     <td>{OperationType[record.operationId]}</td>
                     <td>{record.amount}</td>
