@@ -1,5 +1,5 @@
 import db from "@/db";
-import { operations, records } from "@/db/schema";
+import { operations, records, users } from "@/db/schema";
 import { asc, count, desc, eq } from "drizzle-orm";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
@@ -39,6 +39,9 @@ export async function getRecordsByUserId(
     .offset((page - 1) * pageSize);
 }
 
-export async function getTotalRecordsByUser(userId: string){
-  return await db.select({ count: count() }).from(records);
+export async function getTotalRecordsByUser(userId: string) {
+  return await db
+    .select({ count: count() })
+    .from(records)
+    .where(eq(users.id, userId));
 }
