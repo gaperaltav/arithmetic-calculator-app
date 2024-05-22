@@ -25,11 +25,8 @@ const authOptions: NextAuthOptions = {
         const password = credentials!.password || "";
         let user;
 
-          user = await db
-            .select()
-            .from(users)
-            .where(eq(users.email, email));
-        
+        user = await db.select().from(users).where(eq(users.email, email));
+
         // If no error and we have user data, return it
         if (user && user.length > 0) {
           const loggedUser = user[0];
@@ -38,27 +35,31 @@ const authOptions: NextAuthOptions = {
               id: loggedUser.id,
               name: loggedUser.name,
               email: loggedUser.email,
-              image: loggedUser.image
+              image: loggedUser.image,
             };
           }
           return null;
         } else {
-           throw new Error('Please insert a valid user\'s email')
+          throw new Error("Please insert a valid user's email");
         }
         // Return null if user data could not be retrieved
         return null;
       },
     }),
   ],
-  session:{
+  session: {
     strategy: "jwt",
   },
   callbacks: {
-    signIn(){
-      return true
-    }
+    async signIn({ user, account }) {
+      await db
+        .update(users)
+        .set({ balance: "1200" })
+        .where(eq(users.id, user.id));
+      return true;
+    },
   },
-}
+};
 
 const handlers = NextAuth(authOptions);
 
