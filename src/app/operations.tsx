@@ -78,7 +78,7 @@ export default function Operations() {
             <option value="randomString">Random string</option>
           </select>
           <div id="operation-form" className="w-100 mt-5">
-            {currentOp !== "none" && (
+            {(currentOp !== "none" && user !== null) && (
               <SelectedOperation
                 user={user}
                 refreshInfo={() => fetchUserData()}

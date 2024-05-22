@@ -1,9 +1,15 @@
 export interface User {
-  id: number;
-  userName: string;
-  password: string;
-  status: UserStatus;
-  balance: string;
+  id: string;
+  name: string | null;
+  status: string | null;
+  email: string;
+  password: string | null;
+  balance: string | null;
+  emailVerified: Date | null;
+  image: string | null;
+  createdDate: string;
+  updatedDate: string | null;
+  deletedDate: string | null;
 }
 
 export type Operation = {
