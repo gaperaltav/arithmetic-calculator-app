@@ -43,5 +43,5 @@ export async function getTotalRecordsByUser(userId: string) {
   return await db
     .select({ count: count() })
     .from(records)
-    .where(eq(users.id, userId));
+    .where(eq(records.userId, userId));
 }
