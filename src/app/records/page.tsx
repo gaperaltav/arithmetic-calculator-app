@@ -11,7 +11,7 @@ export default function Operations() {
   const [records, setRecords] = useState<(typeof records.$inferSelect)[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number[]>([]);
-  const pageSize = 3;
+  const pageSize = 8;
 
   const { data } = useSession();
 
@@ -40,7 +40,7 @@ export default function Operations() {
 
   return (
     <>
-      <div className="flex align-center">
+      <div className="w-full">
         <div className="px-5">
           <FormHeader balance={user?.balance!} />
           <table className="table-auto 	border-separate border-solid border-1 border-sky-500">
@@ -66,18 +66,24 @@ export default function Operations() {
           </table>
           <ul className="flex flex-row gap-x-2 mt-3">
             <li>
-              <a> Prev </a>
+              {currentPage > 1 && (
+                <button onClick={() => setCurrentPage(currentPage - 1)}>
+                  Prev
+                </button>
+              )}
             </li>
             {totalPages.length > 0 &&
               totalPages.map((e, index) => (
-                <li key={index}>
+                <li key={index} className={currentPage - 1 === index ? `text-blue-500` : "text-[#999]"}>
                   <button onClick={() => setCurrentPage(index + 1)}>
                     {index + 1}
                   </button>
                 </li>
               ))}
             <li>
-              <a> Next </a>
+              <button onClick={() => setCurrentPage(currentPage + 1)}>
+                Next
+              </button>
             </li>
           </ul>
         </div>

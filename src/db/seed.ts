@@ -2,6 +2,7 @@ import dotenv, { config } from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { operations, users } from "./schema";
+import pgClient from "./client";
 
 //TODO: set for diffents envs
 dotenv.config({ path: __dirname + "/../../.env.local" });
@@ -45,14 +46,19 @@ const initialOperations: (typeof operations.$inferInsert)[] = [
 ];
 
 const mainSeed = async () => {
-  const client = postgres({
-    host: process.env.DB_HOST!,
-    user: process.env.DB_USER!,
-    password: process.env.DB_PASSWORD!,
-    port: parseInt(process.env.DB_PORT!),
-    database: process.env.DB_NAME!,
-  });
-  const database = drizzle(client);
+  const { ENV } = process.env;
+  const pgClient: postgres.Sql<{}> =
+    ENV === "develop"
+      ? postgres(process.env.DATABASE_URL!)
+      : postgres({
+          host: process.env.DB_HOST!,
+          user: process.env.DB_USER!,
+          password: process.env.DB_PASSWORD!,
+          port: parseInt(process.env.DB_PORT!),
+          database: process.env.DB_NAME!,
+        });
+
+  const database = drizzle(pgClient);
 
   await database.insert(users).values(initialUsers);
   await database.insert(operations).values(initialOperations);
