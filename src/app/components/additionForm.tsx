@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { User } from "../global-types";
 
 export default function AdditionForm({ user, refreshInfo }: { user: User, refreshInfo: Function }) {
   const [firstNumber, setFirstNumber] = useState<number>(0);

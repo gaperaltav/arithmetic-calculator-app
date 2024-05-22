@@ -1,6 +1,6 @@
 import db from "@/db";
 import { operations, records } from "@/db/schema";
-import { count, eq } from "drizzle-orm";
+import { asc, count, desc, eq } from "drizzle-orm";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
 export async function insertNewRecord({
@@ -34,6 +34,7 @@ export async function getRecordsByUserId(
     .select()
     .from(records)
     .where(eq(records.userId, userId))
+    .orderBy(desc(records.id))
     .limit(pageSize)
     .offset((page - 1) * pageSize);
 }

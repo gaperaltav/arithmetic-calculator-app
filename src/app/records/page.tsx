@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getUserByEmail } from "../components/actions/userActions";
 import FormHeader from "../components/formHeader";
+import { OperationType } from "../global-types";
 const API_URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/v1/`;
 
 export default function Operations() {
@@ -40,23 +41,23 @@ export default function Operations() {
 
   return (
     <>
-      <div className="w-full">
+      <div className="">
         <div className="px-5">
           <FormHeader balance={user?.balance!} />
-          <table className="table-auto 	border-separate border-solid border-1 border-sky-500">
+          <table className="table-auto 	border-separate border-solid border-1 border-sky-500 w-9/12">
             <thead>
               <tr>
-                <th>Operation</th>
-                <th>Amount</th>
-                <th>Balance</th>
-                <th>response</th>
+                <th className="px-1">Operation</th>
+                <th className="px-1">Amount</th>
+                <th className="px-1">Balance</th>
+                <th className="px-1">response</th>
               </tr>
             </thead>
             <tbody>
               {records.length > 0 &&
                 records.map((record: typeof records.$inferSelect) => (
                   <tr key={record.id}>
-                    <td>{record.operationId}</td>
+                    <td>{OperationType[record.operationId]}</td>
                     <td>{record.amount}</td>
                     <td>{record.balance}</td>
                     <td>{record.operationResponse}</td>
@@ -65,26 +66,35 @@ export default function Operations() {
             </tbody>
           </table>
           <ul className="flex flex-row gap-x-2 mt-3">
-            <li>
-              {currentPage > 1 && (
+            {currentPage > 1 && (
+              <li>
                 <button onClick={() => setCurrentPage(currentPage - 1)}>
                   Prev
                 </button>
-              )}
-            </li>
+              </li>
+            )}
+
             {totalPages.length > 0 &&
               totalPages.map((e, index) => (
-                <li key={index} className={currentPage - 1 === index ? `text-blue-500` : "text-[#999]"}>
+                <li
+                  key={index}
+                  className={
+                    currentPage - 1 === index ? `text-blue-500` : "text-[#999]"
+                  }
+                >
                   <button onClick={() => setCurrentPage(index + 1)}>
                     {index + 1}
                   </button>
                 </li>
               ))}
-            <li>
-              <button onClick={() => setCurrentPage(currentPage + 1)}>
-                Next
-              </button>
-            </li>
+
+            {currentPage < totalPages.length && (
+              <li>
+                <button onClick={() => setCurrentPage(currentPage + 1)}>
+                  Next
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>

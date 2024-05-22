@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const data = await request.json();
   const { user: currentUser } = data;
-  const operation = await getOperationCost({ db, opType: OperationType.multiplication });
+  const operation = await getOperationCost({ db, opType: OperationType.random_string });
 
   if (Number(operation.cost) <= Number(currentUser.balance)) {
     const userBalance = (
